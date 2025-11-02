@@ -12,6 +12,7 @@
   "dependencies": {
     "@heroui/button": "^2.2.27",
     "@heroui/react": "^2.8.5",
+    "@heroui/scroll-shadow": "^2.3.18",
     "@heroui/system": "^2.4.23",
     "@heroui/theme": "^2.4.23",
     "@tailwindcss/vite": "^4.1.16",

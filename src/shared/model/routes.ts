@@ -2,7 +2,7 @@ import "react-router-dom";
 
 export const ROUTES = {
   HOME: "/",
-  TYPING_GAME: "/level",
+  LEVEL: "/level",
 } as const;
 
 // export type PathParams = {

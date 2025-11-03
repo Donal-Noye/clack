@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Typing Game API
+  version: 1.0.0
+
+paths:
+  /levels:
+    get:
+      $ref: "./endpoints/levels.yaml#/getAllLevels"
+
+  /levels/{id}:
+    get:
+      $ref: "./endpoints/levels.yaml#/getLevelById"
+
+components:
+  schemas:
+    $ref: "./shared/schemas.yaml#/components/schemas"

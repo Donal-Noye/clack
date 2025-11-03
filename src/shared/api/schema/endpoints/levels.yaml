@@ -1,0 +1,27 @@
+getAllLevels:
+  summary: Get all typing levels
+  responses:
+    "200":
+      description: List of levels
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../shared/schemas.yaml#/components/schemas/Level"
+
+getLevelById:
+  summary: Get level by ID
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Single level
+      content:
+        application/json:
+          schema:
+            $ref: "../shared/schemas.yaml#/components/schemas/Level"

@@ -6,10 +6,21 @@ import "./index.css";
 import { HeroUIProvider } from "@heroui/react";
 import { router } from "./router.tsx";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <HeroUIProvider>
-      <RouterProvider router={router} />
-    </HeroUIProvider>
-  </StrictMode>,
-);
+async function enableMocking() {
+  if (import.meta.env.PROD) {
+    return;
+  }
+
+  const { worker } = await import("@/shared/api/mocks/browser");
+  return worker.start();
+}
+
+enableMocking().then(() => {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <HeroUIProvider>
+        <RouterProvider router={router} />
+      </HeroUIProvider>
+    </StrictMode>,
+  );
+});

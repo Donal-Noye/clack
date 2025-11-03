@@ -13,7 +13,7 @@ getAllLevels:
 getLevelById:
   summary: Get level by ID
   parameters:
-    - name: id
+    - name: levelId
       in: path
       required: true
       schema:

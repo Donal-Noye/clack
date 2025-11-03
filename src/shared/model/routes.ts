@@ -2,17 +2,17 @@ import "react-router-dom";
 
 export const ROUTES = {
   HOME: "/",
-  LEVEL: "/level",
+  LEVEL: `/level/:levelId`,
 } as const;
 
-// export type PathParams = {
-//   [ROUTES.BOARD]: {
-//     boardId: string;
-//   };
-// };
+export type PathParams = {
+  [ROUTES.LEVEL]: {
+    levelId: string;
+  };
+};
 
-// declare module "react-router-dom" {
-//   interface Register {
-//     params: PathParams;
-//   }
-// }
+declare module "react-router-dom" {
+  interface Register {
+    params: PathParams;
+  }
+}

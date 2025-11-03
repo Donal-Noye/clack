@@ -1,4 +1,4 @@
-export function TypingStats({
+export function LevelStats({
   missedWords,
   currentIndex,
   total

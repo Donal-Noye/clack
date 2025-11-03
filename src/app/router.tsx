@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ROUTES.HOME,
-        lazy: () => import("@/features/typing-game/typing-game.page"),
+        lazy: () => import("@/features/level/level.page.tsx"),
       },
       {
         path: ROUTES.HOME,

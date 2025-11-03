@@ -1,6 +1,6 @@
-import { ENGLISH_KEYBOARD } from "@/features/typing-game/lib/constants.ts";
-import { KeyboardViewLayout } from "@/features/typing-game/ui/keyboard-layout.tsx";
-import { KeyboardActionKey } from "@/features/typing-game/ui/keyboard-action-key.tsx";
+import { ENGLISH_KEYBOARD } from "@/features/level/lib/constants.ts";
+import { KeyboardViewLayout } from "@/features/level/ui/keyboard-layout.tsx";
+import { KeyboardActionKey } from "@/features/level/ui/keyboard-action-key.tsx";
 
 export function KeyboardView({
   currentWord,

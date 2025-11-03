@@ -1,17 +1,17 @@
-import { KeyboardView } from "@/features/typing-game/ui/keyboard-view.tsx";
-import { useTypingGame } from "@/features/typing-game/model/use-typing-game.ts";
+import { KeyboardView } from "@/features/level/ui/keyboard-view.tsx";
+import { useLevel } from "@/features/level/model/use-level.ts";
 import { ScrollShadow } from "@heroui/scroll-shadow";
-import { TypingStats } from "@/features/typing-game/ui/typing-stats.tsx";
+import { LevelStats } from "@/features/level/ui/level-stats.tsx";
 import {
   KeyboardLayout,
   TypingTextLayout,
-} from "@/features/typing-game/ui/keyboard-layout.tsx";
-import { TypingTextLetter } from "@/features/typing-game/ui/typing-text-letter.tsx";
+} from "@/features/level/ui/keyboard-layout.tsx";
+import { TypingTextLetter } from "@/features/level/ui/typing-text-letter.tsx";
 
 const TEXT = "Lorem ipsum dolor sit ameiat id iure, vero voluptas?";
 
-function TypingGamePage() {
-  const typingGame = useTypingGame(TEXT);
+function LevelPage() {
+  const typingGame = useLevel(TEXT);
 
   if (typingGame.isFinished) {
     return (
@@ -19,7 +19,7 @@ function TypingGamePage() {
         <div className="text-3xl font-semibold text-green-600 mb-8">
           🎉 Отлично! Ты набрал всё слово!
         </div>
-        <TypingStats
+        <LevelStats
           missedWords={typingGame.missedWords}
           currentIndex={typingGame.wordArray.length}
           total={typingGame.wordArray.length}
@@ -61,4 +61,4 @@ function TypingGamePage() {
   );
 }
 
-export const Component = TypingGamePage;
+export const Component = LevelPage;

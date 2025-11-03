@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { scrollToLetter } from "@/features/typing-game/lib/scroll-to-letter.ts";
+import { scrollToLetter } from "@/features/level/lib/scroll-to-letter.ts";
 
-export const useTypingGame = (word: string) => {
+export const useLevel = (word: string) => {
   const wordArray = Array.from(word);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [shiftPressed, setShiftPressed] = useState(false);

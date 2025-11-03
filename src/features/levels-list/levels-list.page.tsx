@@ -1,6 +1,8 @@
 import { rqClient } from "@/shared/api/instance.ts";
-import { Card, CardHeader, Button, CardFooter } from "@heroui/react";
+import { Button, Card, CardFooter, CardHeader, Link } from "@heroui/react";
 import { cn } from "@heroui/theme";
+import { href } from "react-router-dom";
+import { ROUTES } from "@/shared/model/routes.ts";
 
 function LevelsListPage() {
   const levelsQuery = rqClient.useQuery("get", "/levels");
@@ -21,7 +23,7 @@ function LevelsListPage() {
             shadow="sm"
             className={cn(
               "h-[220px] flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-lg",
-              "border border-neutral-200 dark:border-neutral-700"
+              "border border-neutral-200 dark:border-neutral-700",
             )}
           >
             <CardHeader className="flex flex-col items-start gap-2">
@@ -40,10 +42,11 @@ function LevelsListPage() {
                 {level.goal?.maxMistakes ?? 0}
               </div>
               <Button
+                as={Link}
                 color="primary"
                 radius="full"
                 size="sm"
-                onPress={() => console.log(`Start level ${level.id}`)}
+                href={href(ROUTES.LEVEL, { levelId: level.id })}
               >
                 Начать
               </Button>

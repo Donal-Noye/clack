@@ -7,57 +7,96 @@ import {
   TypingTextLayout,
 } from "@/features/level/ui/keyboard-layout.tsx";
 import { TypingTextLetter } from "@/features/level/ui/typing-text-letter.tsx";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { type PathParams, ROUTES } from "@/shared/model/routes.ts";
 import { rqClient } from "@/shared/api/instance.ts";
-import { ENGLISH_KEYBOARD } from "@/features/level/lib/constants.ts";
+import {
+  ENGLISH_KEYBOARD,
+  RUSSIAN_KEYBOARD,
+} from "@/features/level/lib/constants.ts";
 import { KeyboardActionKey } from "@/features/level/ui/keyboard-action-key.tsx";
+import { Button } from "@heroui/button";
 
 function LevelPage() {
+  const navigate = useNavigate();
   const params = useParams<PathParams[typeof ROUTES.LEVEL]>();
+  const levelIds = rqClient.useQuery("get", "/levels/ids");
   const levelQuery = rqClient.useQuery("get", "/levels/{levelId}", {
     params: { path: { levelId: params.levelId! } },
   });
 
-  const typingGame = useLevel(levelQuery.data?.text || "");
+  const currentIndex = levelIds.data?.findIndex((id) => id === params.levelId);
+
+  const level = useLevel(levelQuery.data?.text || "");
 
   if (!levelQuery.data) {
-    return null
+    return null;
   }
 
-  if (typingGame.isFinished) {
+  if (level.isFinished) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="text-3xl font-semibold text-green-600 mb-8">
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-8">
+        <div className="text-4xl font-semibold text-green-600">
           🎉 Отлично! Ты набрал всё слово!
         </div>
         <LevelStats
-          missedWords={typingGame.missedWords}
-          currentIndex={typingGame.wordArray.length}
-          total={typingGame.wordArray.length}
+          missedWords={level.missedWords}
+          currentIndex={level.wordArray.length}
+          total={level.wordArray.length}
         />
+        <div className="flex gap-3">
+          <Button onPress={() => navigate(ROUTES.HOME)} size="lg">
+            Домой
+          </Button>
+          <Button onPress={() => navigate(0)} size="lg">
+            Заново
+          </Button>
+          <Button
+            size="lg"
+            color="primary"
+            onPress={() => {
+              if (!levelIds.data || currentIndex === undefined) return;
+
+              const nextLevelId = levelIds.data[currentIndex + 1];
+              if (nextLevelId) {
+                navigate(ROUTES.LEVEL.replace(":levelId", nextLevelId));
+              } else {
+                navigate(ROUTES.HOME);
+              }
+            }}
+          >
+            Следующий уровень
+          </Button>
+        </div>
       </div>
     );
   }
+
+  const keyboardLayout = (() => {
+    switch (levelQuery.data?.language) {
+      case "en":
+        return ENGLISH_KEYBOARD;
+      case "ru":
+        return RUSSIAN_KEYBOARD;
+      default:
+        return ENGLISH_KEYBOARD;
+    }
+  })();
 
   return (
     <KeyboardLayout>
       <ScrollShadow
         orientation="horizontal"
-        ref={typingGame.containerRef}
+        ref={level.containerRef}
         className="relative h-14 w-full max-w-5xl overflow-hidden whitespace-nowrap text-3xl font-medium px-8"
       >
         <TypingTextLayout>
-          {typingGame.wordArray.map((letter, i) => {
-            const isCurrent = i === typingGame.currentIndex;
+          {level.wordArray.map((letter, i) => {
+            const isCurrent = i === level.currentIndex;
 
             return (
               <TypingTextLetter
-                ref={
-                  i === typingGame.currentIndex
-                    ? typingGame.currentLetterRef
-                    : null
-                }
+                ref={i === level.currentIndex ? level.currentLetterRef : null}
                 isCurrent={isCurrent}
                 letter={letter}
               />
@@ -66,19 +105,31 @@ function LevelPage() {
         </TypingTextLayout>
       </ScrollShadow>
       <KeyboardView
-        currentWord={typingGame.currentWord}
-        shiftPressed={typingGame.shiftPressed}
+        currentWord={level.currentWord}
+        shiftPressed={level.shiftPressed}
       >
-        {levelQuery.data?.language === "en" && ENGLISH_KEYBOARD.map((row, rowIndex) => (
+        {keyboardLayout.map((row, rowIndex) => (
           <div key={rowIndex} className="flex justify-center gap-1">
             {row.map((key) => {
-              const isActive = key.toLowerCase() === typingGame.currentWord.toLowerCase();
+              let displayKey: string;
+              let isActive: boolean;
+
+              if (typeof key === "string") {
+                displayKey = key;
+                isActive =
+                  key.toLowerCase() === level.currentWord.toLowerCase();
+              } else {
+                displayKey = level.shiftPressed ? key.shift : key.base;
+                isActive =
+                  key.base === level.currentWord ||
+                  key.shift === level.currentWord;
+              }
 
               return (
                 <KeyboardActionKey
-                  key={key}
+                  key={displayKey + rowIndex}
                   className="text-xl transition-transform duration-150"
-                  keyTitle={key}
+                  keyTitle={displayKey}
                   condition={isActive}
                 />
               );

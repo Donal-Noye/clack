@@ -25,6 +25,9 @@ export const handlers = [
   http.get("/levels", () => {
     return HttpResponse.json(boards);
   }),
+  http.get("/levels/ids", () => {
+    return HttpResponse.json(boards.map(b => b.id));
+  }),
   http.get("/levels/{levelId}", async ({ params }) => {
     const { levelId } = params;
     const level = boards.find((level) => level.id === levelId);

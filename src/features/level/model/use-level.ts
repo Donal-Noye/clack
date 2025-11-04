@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { scrollToLetter } from "@/features/level/lib/scroll-to-letter.ts";
 
-export const useLevel = (word: string) => {
-  const wordArray = Array.from(word);
+export const useLevel = (text: string) => {
+  const wordArray = Array.from(text);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [shiftPressed, setShiftPressed] = useState(false);
 
@@ -12,6 +12,10 @@ export const useLevel = (word: string) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const currentLetterRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [text]);
 
   useEffect(() => {
     scrollToLetter(containerRef, currentLetterRef)

@@ -13,7 +13,7 @@ export function LevelStats({
   );
 
   return (
-    <div className="flex flex-col space-y-4 text-lg font-medium text-neutral-700">
+    <div className="flex flex-col space-y-4 text-xl font-medium text-neutral-700">
       <span>Пропущенных букв: {missedWords}</span>
       <span>Точность: {accuracy}%</span>
       <span>Всего слов: {total}</span>

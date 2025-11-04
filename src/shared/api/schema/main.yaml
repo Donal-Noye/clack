@@ -8,6 +8,10 @@ paths:
     get:
       $ref: "./endpoints/levels.yaml#/getAllLevels"
 
+  /levels/ids:
+    get:
+      $ref: "./endpoints/levels.yaml#/getAllLevelsIds"
+
   /levels/{levelId}:
     get:
       $ref: "./endpoints/levels.yaml#/getLevelById"

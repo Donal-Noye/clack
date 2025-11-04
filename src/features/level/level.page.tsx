@@ -7,11 +7,23 @@ import {
   TypingTextLayout,
 } from "@/features/level/ui/keyboard-layout.tsx";
 import { TypingTextLetter } from "@/features/level/ui/typing-text-letter.tsx";
-
-const TEXT = "Lorem ipsum dolor sit ameiat id iure, vero voluptas?";
+import { useParams } from "react-router-dom";
+import { type PathParams, ROUTES } from "@/shared/model/routes.ts";
+import { rqClient } from "@/shared/api/instance.ts";
+import { ENGLISH_KEYBOARD } from "@/features/level/lib/constants.ts";
+import { KeyboardActionKey } from "@/features/level/ui/keyboard-action-key.tsx";
 
 function LevelPage() {
-  const typingGame = useLevel(TEXT);
+  const params = useParams<PathParams[typeof ROUTES.LEVEL]>();
+  const levelQuery = rqClient.useQuery("get", "/levels/{levelId}", {
+    params: { path: { levelId: params.levelId! } },
+  });
+
+  const typingGame = useLevel(levelQuery.data?.text || "");
+
+  if (!levelQuery.data) {
+    return null
+  }
 
   if (typingGame.isFinished) {
     return (
@@ -56,7 +68,24 @@ function LevelPage() {
       <KeyboardView
         currentWord={typingGame.currentWord}
         shiftPressed={typingGame.shiftPressed}
-      />
+      >
+        {levelQuery.data?.language === "en" && ENGLISH_KEYBOARD.map((row, rowIndex) => (
+          <div key={rowIndex} className="flex justify-center gap-1">
+            {row.map((key) => {
+              const isActive = key.toLowerCase() === typingGame.currentWord.toLowerCase();
+
+              return (
+                <KeyboardActionKey
+                  key={key}
+                  className="text-xl transition-transform duration-150"
+                  keyTitle={key}
+                  condition={isActive}
+                />
+              );
+            })}
+          </div>
+        ))}
+      </KeyboardView>
     </KeyboardLayout>
   );
 }

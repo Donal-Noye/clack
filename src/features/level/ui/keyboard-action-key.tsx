@@ -9,14 +9,11 @@ export function KeyboardActionKey({
   condition: boolean | string;
   keyTitle: string;
 }) {
-  const isActive =
-    condition === true || condition === keyTitle || condition === " ";
-
   return (
     <Button
       className={className}
-      variant={isActive ? "solid" : "flat"}
-      color={isActive ? "primary" : "default"}
+      variant={condition ? "solid" : "flat"}
+      color={condition ? "primary" : "default"}
       size="sm"
     >
       {keyTitle}

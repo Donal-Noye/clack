@@ -1,5 +1,5 @@
 import { rqClient } from "@/shared/api/instance.ts";
-import { Button, Card, CardFooter, CardHeader, Link } from "@heroui/react";
+import { Card, CardFooter, CardHeader, Link } from "@heroui/react";
 import { cn } from "@heroui/theme";
 import { href } from "react-router-dom";
 import { ROUTES } from "@/shared/model/routes.ts";
@@ -41,15 +41,13 @@ function LevelsListPage() {
                 Цель: {level.goal?.minSpeed ?? 0} WPM, ошибок ≤{" "}
                 {level.goal?.maxMistakes ?? 0}
               </div>
-              <Button
-                as={Link}
+              <Link
+                isBlock
                 color="primary"
-                radius="full"
-                size="sm"
                 href={href(ROUTES.LEVEL, { levelId: level.id })}
               >
                 Начать
-              </Button>
+              </Link>
             </CardFooter>
           </Card>
         ))}
